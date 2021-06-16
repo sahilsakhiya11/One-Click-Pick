@@ -26,7 +26,7 @@ const Header = () => {
       </Item>
 
       <Item key="register" icon={<UserAddOutlined />} className="float-right">
-        <Link to="/register">Reister</Link>
+        <Link to="/register">Register</Link>
       </Item>
 
       <Item key="login" icon={<UserOutlined />} className="float-right">
