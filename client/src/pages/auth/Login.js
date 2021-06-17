@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { auth } from "./../../firebase";
 import { toast } from "react-toastify";
-
-const Login = () => {
+import {Button} from 'antd';
+import { MailOutlined } from "@ant-design/icons";
+const Login = ({ history }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,18 +18,17 @@ const Login = () => {
       handleCodeInApp: true,
     };
     await auth.signInWithEmailAndPassword(email, password);
-    toast.success(
-      `Login for ${email} thai rahya cho, santi bhai no pakdo`
-    );
+    toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
     //save user email in local storage
     window.localStorage.setItem("emailForRegistration", email);
     //clear state
     setEmail("");
     setPassword("");
+    history.push("/");
   };
 
   const loginForm = () => (
-    <form onSubmit={handleSubmit}>
+    <form className="mt-4" onSubmit={handleSubmit}>
       <input
         type="email"
         className="form-control"
@@ -43,11 +43,20 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Enter a Password"
-        autoFocus
+      
       />
-      <button type="submit" className="btn btn-success mt-3">
+      <Button
+      onClick = {handleSubmit}
+        type="primary"
+        className="btn btn-success mt-3"
+        block
+        shape="round"
+        size= "large"
+        disabled={!email || password.length < 6}
+        icon={<MailOutlined />}
+      >
         Login
-      </button>
+      </Button>
     </form>
   );
 
@@ -55,7 +64,7 @@ const Login = () => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4>Login</h4>
+          <h4 className="text-center">Login</h4>
 
           {loginForm()}
         </div>

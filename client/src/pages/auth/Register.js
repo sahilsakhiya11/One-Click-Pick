@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { auth } from "./../../firebase";
 import { toast } from "react-toastify";
+import { Button } from "antd";
+import { MailOutlined } from "@ant-design/icons";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -8,8 +10,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //validation
-    if(!email){
-        toast.error("Bhai Email to nakho, kem aawu karo cho?")
+    if (!email) {
+      toast.error("Bhai Email to nakho, kem aawu karo cho?");
     }
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
@@ -20,13 +22,13 @@ const Register = () => {
       `Email is sent to ${email}. Click the link to complete your registration`
     );
     //save user email in local storage
-    window.localStorage.setItem('emailForRegistration', email)
+    window.localStorage.setItem("emailForRegistration", email);
     //clear state
-    setEmail("")
+    setEmail("");
   };
 
   const registerForm = () => (
-    <form onSubmit={handleSubmit}>
+    <form className="mt-4" onSubmit={handleSubmit}>
       <input
         type="email"
         className="form-control"
@@ -36,9 +38,18 @@ const Register = () => {
         autoFocus
       />
 
-      <button type="submit" className="btn btn-success mt-3">
+      <Button
+        onClick={handleSubmit}
+        type="primary"
+        className="btn btn-success mt-3"
+        block
+        shape="round"
+        size="large"
+        disabled={!email}
+        icon = {<MailOutlined />}
+      >
         Register
-      </button>
+      </Button>
     </form>
   );
 
@@ -46,8 +57,8 @@ const Register = () => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4>Register</h4>
-      
+          <h4 className="text-center">Register</h4>
+
           {registerForm()}
         </div>
       </div>
