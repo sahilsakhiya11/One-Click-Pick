@@ -37,7 +37,7 @@ const RegisterComplete = ({ history }) => {
           //redux store
           console.log(user, idToken);
           //redirect
-          // history.push('/')
+          history.push('/')
         }
       }
     } catch (error) {
