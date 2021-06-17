@@ -1,30 +1,50 @@
 import React, { useState } from "react";
 import { auth } from "./../../firebase";
 import { toast } from "react-toastify";
-import {Button} from 'antd';
+import { Button } from "antd";
 import { MailOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  let dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //validation
-    if (!email || !password) {
-      toast.error("Bhai Email ke password bhuli gaya cho, kem aawu karo cho?");
+    setLoading(true);
+    try {
+      //validation
+      if (!email || !password) {
+        toast.error(
+          "Bhai Email ke password bhuli gaya cho, kem aawu karo cho?"
+        );
+      }
+
+      const result = await auth.signInWithEmailAndPassword(email, password);
+      const user = result;
+      const idTokenResult = await user.getIdTokenResult();
+
+      dispatch({
+        type: "LOGGED_IN_USER",
+        payload: {
+          email: user.email,
+          token: idTokenResult.token,
+        },
+      });
+
+      toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
+
+      //clear state
+      setEmail("");
+      setPassword("");
+      history.push("/");
+    } catch (error) {
+      toast.error(error.message);
+      setLoading(false);
     }
-    const config = {
-      url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
-      handleCodeInApp: true,
-    };
-    await auth.signInWithEmailAndPassword(email, password);
-    toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
-    //save user email in local storage
-    window.localStorage.setItem("emailForRegistration", email);
-    //clear state
-    setEmail("");
-    setPassword("");
-    history.push("/");
   };
 
   const loginForm = () => (
@@ -43,15 +63,14 @@ const Login = ({ history }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Enter a Password"
-      
       />
       <Button
-      onClick = {handleSubmit}
+        onClick={handleSubmit}
         type="primary"
         className="btn btn-success mt-3"
         block
         shape="round"
-        size= "large"
+        size="large"
         disabled={!email || password.length < 6}
         icon={<MailOutlined />}
       >
@@ -64,8 +83,11 @@ const Login = ({ history }) => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4 className="text-center">Login</h4>
-
+          {loading ? (
+            <h4 className="text-center">Login</h4>
+          ) : (
+            <h4 className="text-danger">Loading...</h4>
+          )}
           {loginForm()}
         </div>
       </div>
