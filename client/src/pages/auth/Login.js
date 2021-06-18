@@ -48,28 +48,30 @@ const Login = ({ history }) => {
   };
 
   const googleLogin = () => {
-     auth.signInWithPopup(googleAuthProvider).then(async (result) => {
-      const { user } = result;
-      const idTokenResult = await user.getIdTokenResult();
+    auth
+      .signInWithPopup(googleAuthProvider)
+      .then(async (result) => {
+        const { user } = result;
+        const idTokenResult = await user.getIdTokenResult();
 
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
+        dispatch({
+          type: "LOGGED_IN_USER",
+          payload: {
+            email: user.email,
+            token: idTokenResult.token,
+          },
+        });
+
+        toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
+
+        //clear state
+        setEmail("");
+        setPassword("");
+        history.push("/");
+      })
+      .catch((error) => {
+        toast.error(error.message);
       });
-
-      toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
-
-      //clear state
-      setEmail("");
-      setPassword("");
-      history.push("/");
-    })
-    .catch((error) =>{
-      toast.error(error.message)
-    })
   };
 
   const loginForm = () => (
@@ -121,9 +123,9 @@ const Login = ({ history }) => {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           {loading ? (
-            <h4 className="text-center">Login</h4>
-          ) : (
             <h4 className="text-danger">Loading...</h4>
+          ) : (
+            <h4 className="text-center">Login</h4>
           )}
           {loginForm()}
         </div>
