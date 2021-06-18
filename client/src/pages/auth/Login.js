@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { auth } from "./../../firebase";
+import { auth, googleAuthProvider } from "./../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 
 const Login = ({ history }) => {
@@ -47,6 +47,31 @@ const Login = ({ history }) => {
     }
   };
 
+  const googleLogin = () => {
+     auth.signInWithPopup(googleAuthProvider).then(async (result) => {
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult();
+
+      dispatch({
+        type: "LOGGED_IN_USER",
+        payload: {
+          email: user.email,
+          token: idTokenResult.token,
+        },
+      });
+
+      toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
+
+      //clear state
+      setEmail("");
+      setPassword("");
+      history.push("/");
+    })
+    .catch((error) =>{
+      toast.error(error.message)
+    })
+  };
+
   const loginForm = () => (
     <form className="mt-4" onSubmit={handleSubmit}>
       <input
@@ -75,6 +100,18 @@ const Login = ({ history }) => {
         icon={<MailOutlined />}
       >
         Login
+      </Button>
+
+      <Button
+        onClick={googleLogin}
+        type="danger"
+        className="mt-3"
+        block
+        shape="round"
+        size="large"
+        icon={<GoogleOutlined />}
+      >
+        Login with Google
       </Button>
     </form>
   );
