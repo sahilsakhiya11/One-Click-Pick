@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import {Link} from 'react-router-dom'
+
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -24,8 +26,8 @@ const Login = ({ history }) => {
       }
 
       const result = await auth.signInWithEmailAndPassword(email, password);
-      const user = result;
-      const idTokenResult = await user.getIdTokenResult();
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult()
 
       dispatch({
         type: "LOGGED_IN_USER",
@@ -37,11 +39,10 @@ const Login = ({ history }) => {
 
       toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
 
-      //clear state
-      setEmail("");
-      setPassword("");
+      
       history.push("/");
     } catch (error) {
+      console.log(error)
       toast.error(error.message);
       setLoading(false);
     }
@@ -62,7 +63,7 @@ const Login = ({ history }) => {
           },
         });
 
-        toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
+        toast.success(`Login for ${user.email} thai rahya cho, santi bhai no pakdo`);
 
         //clear state
         setEmail("");
@@ -115,6 +116,10 @@ const Login = ({ history }) => {
       >
         Login with Google
       </Button>
+
+      <Link to="/forgot/password" className="float-right mt-3 text-danger">
+        Forgot Password
+      </Link>
     </form>
   );
 
