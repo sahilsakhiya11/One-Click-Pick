@@ -78,23 +78,28 @@ const Login = ({ history }) => {
       .then(async (result) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
+        createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          console.log("CREATE OR UPDATE RESPONSE", res);
+        })
+        .catch();
 
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
+        // dispatch({
+        //   type: "LOGGED_IN_USER",
+        //   payload: {
+        //     email: user.email,
+        //     token: idTokenResult.token,
+        //   },
+        // });
 
-        toast.success(
-          `Login for ${user.email} thai rahya cho, santi bhai no pakdo`
-        );
+        // toast.success(
+        //   `Login for ${user.email} thai rahya cho, santi bhai no pakdo`
+        // );
 
-        //clear state
-        setEmail("");
-        setPassword("");
-        history.push("/");
+        // //clear state
+        // setEmail("");
+        // setPassword("");
+        // history.push("/");
       })
       .catch((error) => {
         toast.error(error.message);
