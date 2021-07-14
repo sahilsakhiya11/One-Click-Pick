@@ -6,20 +6,9 @@ import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import {createOrUpdateUser} from "../../functions/auth";
 
-const createOrUpdateUser = async (authtoken) => {
-  return await axios.post(
-    `${process.env.REACT_APP_API}/createOrUpdateUser`,
-    {},
-    {
-      headers: {
-        authtoken,
-      },
-    }
-  );
-  console.log("sahil")
-};
+
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("imsahilpatel1111@gmail.com");
@@ -51,9 +40,19 @@ const Login = ({ history }) => {
 
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
-          console.log("CREATE OR UPDATE RESPONSE", res);
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name: res.data.name,
+              role: res.data.role,
+              _id: res.data._id,
+              email: res.data.email,
+              token: idTokenResult.token,
+            },
+          });
         })
         .catch();
+
       // dispatch({
       //   type: "LOGGED_IN_USER",
       //   payload: {
@@ -64,7 +63,7 @@ const Login = ({ history }) => {
 
       // toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
 
-      // history.push("/");
+      history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -79,18 +78,19 @@ const Login = ({ history }) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
         createOrUpdateUser(idTokenResult.token)
-        .then((res) => {
-          console.log("CREATE OR UPDATE RESPONSE", res);
-        })
-        .catch();
-
-        // dispatch({
-        //   type: "LOGGED_IN_USER",
-        //   payload: {
-        //     email: user.email,
-        //     token: idTokenResult.token,
-        //   },
-        // });
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                role: res.data.role,
+                _id: res.data._id,
+                email: res.data.email,
+                token: idTokenResult.token,
+              },
+            });
+          })
+          .catch();
 
         // toast.success(
         //   `Login for ${user.email} thai rahya cho, santi bhai no pakdo`
@@ -99,7 +99,7 @@ const Login = ({ history }) => {
         // //clear state
         // setEmail("");
         // setPassword("");
-        // history.push("/");
+        history.push("/");
       })
       .catch((error) => {
         toast.error(error.message);
