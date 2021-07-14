@@ -3,8 +3,7 @@ import { auth } from "./../../firebase";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {createOrUpdateUser} from "../../functions/auth";
-
+import { createOrUpdateUser } from "../../functions/auth";
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -12,7 +11,6 @@ const RegisterComplete = ({ history }) => {
 
   const { user } = useSelector((state) => ({ ...state }));
   let dispatch = useDispatch();
-
 
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
@@ -43,7 +41,7 @@ const RegisterComplete = ({ history }) => {
           await user.updatePassword(password);
           const idToken = await user.getIdTokenResult();
           const idTokenResult = await user.getIdTokenResult();
- 
+
           //redux store
           console.log(user, idToken);
 
@@ -60,7 +58,7 @@ const RegisterComplete = ({ history }) => {
                 },
               });
             })
-            .catch();
+            .catch((err) => console.log(err));
           //redirect
           history.push("/");
         }
