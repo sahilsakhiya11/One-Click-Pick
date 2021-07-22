@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import {createOrUpdateUser} from "../../functions/auth";
 
 
-
 const Login = ({ history }) => {
   const [email, setEmail] = useState("imsahilpatel1111@gmail.com");
   const [password, setPassword] = useState("123456789");
@@ -22,6 +21,15 @@ const Login = ({ history }) => {
   }, [user]);
 
   let dispatch = useDispatch();
+
+  const roleBasedRedirect = (res) => {
+    if(res.data.role === 'admin'){
+      history.push("admin/dashboard")
+    }else{
+      history.push("user/history");
+    }
+  }
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,8 +58,9 @@ const Login = ({ history }) => {
               token: idTokenResult.token,
             },
           });
+          roleBasedRedirect(res);
         })
-        .catch();
+        .catch((err)=> console.log(err));
 
       // dispatch({
       //   type: "LOGGED_IN_USER",
@@ -63,7 +72,8 @@ const Login = ({ history }) => {
 
       // toast.success(`Login for ${email} thai rahya cho, santi bhai no pakdo`);
 
-      history.push("/");
+     // history.push("/");
+     
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -89,6 +99,7 @@ const Login = ({ history }) => {
                 token: idTokenResult.token,
               },
             });
+            roleBasedRedirect(res);
           })
           .catch();
 
@@ -99,7 +110,7 @@ const Login = ({ history }) => {
         // //clear state
         // setEmail("");
         // setPassword("");
-        history.push("/");
+        //history.push("/");
       })
       .catch((error) => {
         toast.error(error.message);

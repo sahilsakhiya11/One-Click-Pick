@@ -11,6 +11,8 @@ import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import History from "./pages/user/History";
+import UserRoute from "./component/routes/UserRoute";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
@@ -59,6 +61,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/register/complete" exact component={RegisterComplete} />
         <Route path="/forgot/password" exact component={ForgotPassword} />
+        <UserRoute path="/user/History" exact component={History} />
       </Switch>
     </>
   );
