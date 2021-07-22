@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import {  ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Home from "./pages/Home";
-import { Switch, BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Switch, BrowserRouter as  Route} from "react-router-dom";
 import Header from "./component/nav/Header";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,8 +13,10 @@ import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import History from "./pages/user/History";
 import UserRoute from "./component/routes/UserRoute";
+import AdminRoute from "./component/routes/AdminRoute";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
@@ -50,7 +52,7 @@ const App = () => {
 
     //clean up and sipatch to redux
     return () => unsubscribe();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -63,9 +65,10 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/register/complete" exact component={RegisterComplete} />
         <Route path="/forgot/password" exact component={ForgotPassword} />
-        <Route path="/user/password" exact component={Password} />
-        <Route path="/user/wishlist" exact component={Wishlist} />
+        <UserRoute path="/user/password" exact component={Password} />
+        <UserRoute path="/user/wishlist" exact component={Wishlist} />
         <UserRoute path="/user/History" exact component={History} />
+        <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
       </Switch>
     </>
   );

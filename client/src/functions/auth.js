@@ -11,7 +11,6 @@ export const createOrUpdateUser = async (authtoken) => {
         },
       }
     );
-    console.log("sahil");
   };
 
   export const currentUser = async (authtoken) => {
@@ -24,5 +23,17 @@ export const createOrUpdateUser = async (authtoken) => {
         },
       }
     );
-    console.log("sahil");
   };
+
+  export const currentAdmin = async (authtoken) => {
+    return await axios.post(
+      `${process.env.REACT_APP_API}/current-admin`,
+      {},
+      {
+        headers: {
+          authtoken,
+        },
+      }
+    );
+  };
+  

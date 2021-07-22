@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { auth } from "./../../firebase";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Button } from "antd";
 
 const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -12,7 +11,7 @@ const ForgotPassword = ({ history }) => {
 
   useEffect(() => {
     if (user && user.token) history.push("/");
-  }, [user]);
+  }, [user, history] );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
