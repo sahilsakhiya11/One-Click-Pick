@@ -3,6 +3,13 @@ Group Details:-
 2.	Sumit Kumar
 3.	Jasmeet Singh
 
+Work done in this push:-
+1. Created login and registration
+2. Firebase Authentication and redux
+3. Created Backend api for users
+4. Firebase auth check
+5. Created user and admin route for the frontend and backend and protect the user to do operation
+
 
 Project Idea:- Ecommerce Project
 
