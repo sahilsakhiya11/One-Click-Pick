@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
+import { Switch,Route} from "react-router-dom";
 import {  ToastContainer } from "react-toastify";
+import "antd/dist/antd.css";
 import "react-toastify/dist/ReactToastify.css";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Home from "./pages/Home";
-import { Switch, BrowserRouter as  Route} from "react-router-dom";
 import Header from "./component/nav/Header";
-import "antd/dist/antd.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import History from "./pages/user/History";
