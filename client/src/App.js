@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Switch,Route} from "react-router-dom";
-import {  ToastContainer } from "react-toastify";
+import { Switch, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "antd/dist/antd.css";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,6 +17,7 @@ import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CategoryCreate from "./pages/admin/category/CategoryCreate";
+import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
@@ -32,7 +33,7 @@ const App = () => {
         //getting a user Token
         const idTokenResult = await user.getIdTokenResult();
         console.log("user", user);
-        
+
         currentUser(idTokenResult.token)
           .then((res) => {
             dispatch({
@@ -46,7 +47,7 @@ const App = () => {
               },
             });
           })
-          .catch((err)=> console.log(err));
+          .catch((err) => console.log(err));
       }
     });
 
@@ -70,6 +71,11 @@ const App = () => {
         <UserRoute path="/user/History" exact component={History} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/admin/category" exact component={CategoryCreate} />
+        <AdminRoute
+          path="/admin/category/:slug"
+          exact
+          component={CategoryUpdate}
+        />
       </Switch>
     </>
   );
