@@ -23,6 +23,7 @@ import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
 import SubUpdate from "./pages/admin/sub/SubUpdate";
+import ProductCreate from "./pages/admin/product/ProductCreate";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -79,11 +80,8 @@ const App = () => {
           component={CategoryUpdate}
         />
         <AdminRoute path="/admin/sub" exact component={SubCreate} />
-        <AdminRoute
-          path="/admin/sub/:slug"
-          exact
-          component={SubUpdate}
-        />
+        <AdminRoute path="/admin/sub/:slug" exact component={SubUpdate} />
+        <AdminRoute path="/admin/product" exact component={ProductCreate} />
       </Switch>
     </>
   );
