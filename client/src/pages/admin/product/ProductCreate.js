@@ -5,19 +5,19 @@ import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 
 const initialState = {
-  title: "",
-  descriptioin: "",
-  price: "",
-  categories: [],
-  category: "",
-  subs: [],
-  shipping: "",
-  quantity: "",
-  images: [],
-  colors: ["Black", "Brown", "Silver", "White", "Blue"],
-  brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
-  color: "",
-  brand: "",
+    title: "Macbook Pro",
+    description: "This is the best Apple product",
+    price: "45000",
+    categories: [],
+    category: "",
+    subs: [],
+    shipping: "Yes",
+    quantity: "50",
+    images: [],
+    colors: ["Black", "Brown", "Silver", "White", "Blue"],
+    brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
+    color: "White",
+    brand: "Apple",
 };
 
 const ProductCreate = () => {
@@ -46,6 +46,8 @@ const ProductCreate = () => {
     createProduct(values, user.token)
       .then((res) => {
         console.log(res);
+        window.alert(`"${res.data.title}" is created`);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
