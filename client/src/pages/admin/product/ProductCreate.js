@@ -3,43 +3,39 @@ import AdminNav from "../../../component/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
+import ProductCreateForm from "../../../component/forms/ProductCreateForm";
+import { getCategories, getCategorySubs } from "../../../functions/category";
 
 const initialState = {
-    title: "Macbook Pro",
-    description: "This is the best Apple product",
-    price: "45000",
-    categories: [],
-    category: "",
-    subs: [],
-    shipping: "Yes",
-    quantity: "50",
-    images: [],
-    colors: ["Black", "Brown", "Silver", "White", "Blue"],
-    brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
-    color: "White",
-    brand: "Apple",
+  title: "Macbook Pro",
+  description: "This is the best Apple product",
+  price: "45000",
+  categories: [],
+  category: "",
+  subs: [],
+  shipping: "Yes",
+  quantity: "50",
+  images: [],
+  colors: ["Black", "Brown", "Silver", "White", "Blue"],
+  brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
+  color: "White",
+  brand: "Apple",
 };
 
 const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [showSub, setShowSub] = useState(false);
+
   // redux
   const { user } = useSelector((state) => ({ ...state }));
-  // destructure
-  const {
-    title,
-    description,
-    price,
-    categories,
-    category,
-    subs,
-    shipping,
-    quantity,
-    images,
-    colors,
-    brands,
-    color,
-    brand,
-  } = values;
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = () =>
+    getCategories().then((c) => setValues({ ...values, categories: c.data }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,7 +47,8 @@ const ProductCreate = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 400) toast.error(err.response.data);
+        // if (err.response.status === 400) toast.error(err.response.data);
+        toast.error(err.response.data.err);
       });
   };
 
@@ -59,6 +56,18 @@ const ProductCreate = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
     // console.log(e.target.name, " ----- ", e.target.value);
   };
+
+  const handleCatagoryChange = (e) => {
+    e.preventDefault();
+    console.log("CLICKED CATEGORY", e.target.value);
+    setValues({ ...values, subs: [], category: e.target.value });
+    getCategorySubs(e.target.value).then((res) => {
+      console.log("SUB OPTIONS ON CATGORY CLICK", res);
+      setSubOptions(res.data);
+    });
+    setShowSub(true);
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -68,100 +77,19 @@ const ProductCreate = () => {
 
         <div className="col-md-10">
           <h4>Product create</h4>
-          <hr className="w-25"/>
+          <hr />
 
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Title</label>
-              <input
-                type="text"
-                name="title"
-                className="form-control w-25"
-                value={title}
-                onChange={handleChange}
-              />
-            </div>
+          {JSON.stringify(values.subs)}
 
-            <div className="form-group">
-              <label>Description</label>
-              <input
-                type="text"
-                name="description"
-                className="form-control w-25"
-                value={description}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Price</label>
-              <input
-                type="number"
-                name="price"
-                className="form-control w-25"
-                value={price}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Shipping</label>
-              <select
-                name="shipping"
-                className="form-control w-25"
-                onChange={handleChange}
-              >
-                <option>Please select</option>
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Quantity</label>
-              <input
-                type="number"
-                name="quantity"
-                className="form-control w-25"
-                value={quantity}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Color</label>
-              <select
-                name="color"
-                className="form-control w-25"
-                onChange={handleChange}
-              >
-                <option>Please select</option>
-                {colors.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Brand</label>
-              <select
-                name="brand"
-                className="form-control w-25"
-                onChange={handleChange}
-              >
-                <option>Please select</option>
-                {brands.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button className="btn btn-outline-info">Save</button>
-          </form>
+          <ProductCreateForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            setValues={setValues}
+            values={values}
+            handleCatagoryChange={handleCatagoryChange}
+            subOptions={subOptions}
+            showSub={showSub}
+          />
         </div>
       </div>
     </div>
