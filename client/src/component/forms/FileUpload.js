@@ -84,23 +84,28 @@ const FileUpload = ({ values, setValues, setLoading }) => {
 
   return (
     <>
-      <div className="row" style={{width: 'auto'}}>
+       <div className="row" style={{width: '20%'}}>
         {values.images &&
-          values.images.map((image) => (
-            <Badge
-              count="X"
-              key={image.public_id}
-              onClick={() => handleImageRemove(image.public_id)}
-              style={{ cursor: "pointer" }}
-            >
-              <Avatar
-                src={image.url}
-                size={100}
-                shape="square"
-                className="ml-3"
-              />
-            </Badge>
-          ))}
+          values.images.map((image) => {
+            return (
+              <span className="avatar-item col-md-6" key={image.public_id}>
+ 
+                <Badge
+                  count="X"
+                // @ts-ignore - this is a comment
+                  onClick={() => handleImageRemove(image.public_id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Avatar
+                    src={image.url}
+                    size={100}
+                    shape="square"
+                    className="ml-3 mb-3"
+                  />
+                </Badge>
+              </span>
+            );
+          })}
       </div>
       <div className="row">
         <label className="btn btn-primary">
