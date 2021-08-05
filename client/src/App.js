@@ -19,11 +19,13 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import CategoryCreate from "./pages/admin/category/CategoryCreate";
 import SubCreate from "./pages/admin/sub/SubCreate";
 import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
+import SubUpdate from "./pages/admin/sub/SubUpdate";
+import ProductCreate from "./pages/admin/product/ProductCreate";
+import AllProducts from "./pages/admin/product/AllProducts";
+import ProductUpdate from "./pages/admin/product/ProductUpdate";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
-import SubUpdate from "./pages/admin/sub/SubUpdate";
-import ProductCreate from "./pages/admin/product/ProductCreate";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -82,6 +84,12 @@ const App = () => {
         <AdminRoute path="/admin/sub" exact component={SubCreate} />
         <AdminRoute path="/admin/sub/:slug" exact component={SubUpdate} />
         <AdminRoute path="/admin/product" exact component={ProductCreate} />
+        <AdminRoute exact path="/admin/products" component={AllProducts} />
+        <AdminRoute
+          exact
+          path="/admin/product/:slug"
+          component={ProductUpdate}
+        />
       </Switch>
     </>
   );
