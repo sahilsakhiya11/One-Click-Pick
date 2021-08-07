@@ -26,6 +26,7 @@ import ProductUpdate from "./pages/admin/product/ProductUpdate";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
+import Product from "./pages/Product";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ const App = () => {
           path="/admin/product/:slug"
           component={ProductUpdate}
         />
+        <Route exact path="/product/:slug" component={Product} />
       </Switch>
     </>
   );
