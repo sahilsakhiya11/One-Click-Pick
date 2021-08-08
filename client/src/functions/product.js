@@ -47,3 +47,7 @@ export const getProductsCount = async () =>
       },
     }
   );
+
+  export const getRelated = async (productId) =>
+  await axios.get(`${process.env.REACT_APP_API}/product/related/${productId}`);
+
