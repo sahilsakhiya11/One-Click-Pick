@@ -50,6 +50,11 @@ const SingleProduct = ({ product, onStarClick, star }) => {
         type: "ADD_TO_CART",
         payload: unique,
       });
+
+      dispatch({
+        type: "SET_VISIBLE",
+        payload: true,
+      });
     }
   };
 
