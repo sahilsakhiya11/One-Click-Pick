@@ -5,9 +5,21 @@ const router = express.Router();
 // middlewares
 const { authCheck } = require("../middlewares/auth");
 // controllers
-const { userCart } = require("../controllers/user");
+const {
+  userCart,
+  getUserCart,
+  emptyCart,
+  saveAddress,
+  applyCouponToUserCart,
+} = require("../controllers/user");
 
-router.post("/cart", authCheck, userCart); // save cart
+router.post("/user/cart", authCheck, userCart); // save cart
+router.get("/user/cart", authCheck, getUserCart); // get cart
+router.delete("/user/cart", authCheck, emptyCart); // empty cart
+router.post("/user/address", authCheck, saveAddress);
+
+// coupon
+router.post("/user/cart/coupon", authCheck, applyCouponToUserCart);
 
 // router.get("/user", (req, res) => {
 //   res.json({
